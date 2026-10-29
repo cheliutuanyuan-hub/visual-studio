@@ -1,0 +1,10 @@
+# Runtime + test dependencies for visual-studio.
+# Offline mock provider is the default; the real Seedream / GPT-Image adapters
+# are structured stubs that raise NotImplementedError with endpoint notes.
+fastapi>=0.100
+uvicorn[standard]>=0.20
+pydantic>=2.0
+pydantic-settings>=2.0
+httpx>=0.24
+sqlalchemy>=2.0
+pytest>=7.0

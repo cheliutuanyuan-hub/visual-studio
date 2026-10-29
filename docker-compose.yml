@@ -1,0 +1,36 @@
+# docker-compose for visual-studio (standalone).
+#
+# The default configuration runs fully OFFLINE via the MockProvider (no GPU,
+# no external API). For the integrated A+B deployment use ../docker-compose.yml.
+#
+#   docker compose up -d --build
+#   curl http://localhost:8011/health
+#
+# To exercise the (stub) real adapters instead of the mock, override:
+#   environment:
+#     VISUAL_PROVIDER_ROUTE: '{"main":"seedream","scene":"gpt_image","detail":"seedream"}'
+# and supply SEEDREAM_API_KEY / OPENAI_API_KEY inside the adapters.
+
+services:
+  visual-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ecom-visual-studio:0.1.0
+    container_name: visual-studio
+    ports:
+      - "8011:8011"
+    environment:
+      VISUAL_DB_PATH: /data/visual_studio.db
+      VISUAL_OUTPUT_DIR: /data/outputs
+      VISUAL_PROVIDER: mock
+      VISUAL_PROVIDER_ROUTE: '{"main":"mock","scene":"mock","detail":"mock"}'
+      VISUAL_WEBHOOK_URL: ""
+      VISUAL_HOST: 0.0.0.0
+      VISUAL_PORT: 8011
+    volumes:
+      - vs_data:/data
+    restart: unless-stopped
+
+volumes:
+  vs_data:
